@@ -1,5 +1,6 @@
 package com.hrong.flink.table_sql
 
+import org.apache.flink.api.common.functions.RichFilterFunction
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.table.api.scala.StreamTableEnvironment
 import org.apache.flink.api.scala._
@@ -17,18 +18,25 @@ object TableQuery {
     )
 
     stableEnv.registerTable("s_people", stableEnv.fromDataStream(dataStream, 'name, 'gender, 'age))
+    //类似select from ***
+//    stableEnv.scan("s_people")
+//      //如果这样写filter不会起作用 .filter('age == 22)
+//      .filter('age === 22)
+//      .select('name, 'gender, 'age)
+//      .toAppendStream[Row]
+//      .print()
     stableEnv.scan("s_people")
-      //如果这样写filter不会起作用
-      .filter('age == "22")
-      .select('name, 'gender, 'age)
-      .toAppendStream[Row]
-      .print()
+        .groupBy("gender")
+        .select()
+        .toRetractStream[Row]
+        .print()
+
 
 //    stableEnv.sqlQuery(
 //      """
 //        |select name, gender, age
 //        | from s_people
-//        | where age != 18
+//        | where age = 18
 //      """.stripMargin).toAppendStream[Row].print()
     senv.execute(this.getClass.getName)
   }

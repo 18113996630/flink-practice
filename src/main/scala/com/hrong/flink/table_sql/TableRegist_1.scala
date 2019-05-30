@@ -1,6 +1,5 @@
 package com.hrong.flink.table_sql
 
-import org.apache.flink.api.common.typeinfo.BasicTypeInfo
 import org.apache.flink.api.scala.ExecutionEnvironment
 import org.apache.flink.api.scala.typeutils.Types
 import org.apache.flink.core.fs.FileSystem.WriteMode
