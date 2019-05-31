@@ -16,6 +16,7 @@ import scala.collection.mutable.ArrayBuffer
 
 /**
   * 水印测试
+  * 详细讲解博客地址：https://blog.csdn.net/hlp4207/article/details/90698296
   */
 object WaterMarkFunc01 {
   // 线程安全的时间格式化对象
