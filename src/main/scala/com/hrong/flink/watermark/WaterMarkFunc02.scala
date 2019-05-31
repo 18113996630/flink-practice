@@ -15,10 +15,10 @@ import org.apache.flink.util.Collector
 import scala.collection.mutable.ArrayBuffer
 
 /**
-  * 水印测试
-  * 详细讲解博客地址：https://blog.csdn.net/hlp4207/article/details/90698296
+  * 延迟测试
+  * 详细讲解博客地址：https://blog.csdn.net/hlp4207/article/details/90717905
   */
-object WaterMarkFunc01 {
+object WaterMarkFunc02 {
   // 线程安全的时间格式化对象
   val sdf: FastDateFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss:SSS")
 
@@ -77,8 +77,15 @@ object WaterMarkFunc01 {
         time
       }
     })
+    val lateData = new OutputTag[(String,Long)]("late")
     val result: DataStream[String] = waterStream.keyBy(0)// 根据name值进行分组
       .window(TumblingEventTimeWindows.of(Time.seconds(5L)))// 5s跨度的基于事件时间的翻滚窗口
+    /**
+      * 对于此窗口而言，允许2秒的迟到数据，即第一次触发是在watermark > end-of-window时
+      * 第二次（或多次）触发的条件是watermark < end-of-window + allowedLateness时间内，这个窗口有late数据到达
+      */
+      .allowedLateness(Time.seconds(2L))
+      .sideOutputLateData(lateData)
       .apply(new WindowFunction[(String, Long), String, Tuple, TimeWindow] {
         override def apply(key: Tuple, window: TimeWindow, input: Iterable[(String, Long)], out: Collector[String]): Unit = {
           val timeArr = ArrayBuffer[String]()
@@ -96,6 +103,10 @@ object WaterMarkFunc01 {
         }
       })
     result.print("window计算结果:")
+
+    val late = result.getSideOutput(lateData)
+    late.print("迟到的数据:")
+
     env.execute(this.getClass.getName)
   }
 }
