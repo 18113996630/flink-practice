@@ -4,6 +4,9 @@ import org.apache.flink.api.scala.{ExecutionEnvironment, _}
 import org.apache.hadoop.fs.Path
 import org.apache.hadoop.mapred.{FileOutputFormat, JobConf}
 
+/**
+  * 暂时还有问题
+  */
 object MultipleTextOutputFormat01Test {
   def main(args: Array[String]): Unit = {
     //1.创建批处理环境
