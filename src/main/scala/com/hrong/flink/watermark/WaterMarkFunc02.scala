@@ -1,6 +1,7 @@
 package com.hrong.flink.watermark
 
 import org.apache.commons.lang3.time.FastDateFormat
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo
 import org.apache.flink.api.java.tuple.Tuple
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks

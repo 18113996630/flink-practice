@@ -2,6 +2,7 @@ package com.hrong.flink.dataset_function
 
 import com.hrong.flink.model.LineCount
 import org.apache.flink.api.scala.{ExecutionEnvironment, _}
+import org.apache.flink.configuration.Configuration
 
 object MapFunction01 {
   def main(args: Array[String]): Unit = {

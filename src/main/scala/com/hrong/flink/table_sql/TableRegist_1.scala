@@ -22,7 +22,7 @@ object TableRegist_1 {
     )
     //注册表的方式：
     //1、通过DataStream
-    stableEnv.registerTable("s_people", stableEnv.fromDataStream(dataStream,"name","age"))
+    stableEnv.registerTable("s_people", stableEnv.fromDataStream(dataStream, "name", "age"))
     //2、通过查询结果
     val resTable = stableEnv.scan("s_people").select("_1,_2")
     stableEnv.registerTable("resTable", resTable)
