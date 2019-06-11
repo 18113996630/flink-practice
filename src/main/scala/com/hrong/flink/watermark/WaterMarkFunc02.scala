@@ -17,6 +17,10 @@ import scala.collection.mutable.ArrayBuffer
 
 /**
   * 延迟测试
+  * flink对于迟到数据的处理：
+  * 如果业务上对迟到的数据有需求，则可以设置允许迟到的时间，那么每个窗口可以在允许等待范围内继续等待迟到的数据
+  * 只要当前的watermark时间 < window结束时间+allowedLateness
+  * 那么就算该窗口已经进行过计算，再次接收到属于该窗口的数据，仍会继续参与窗口计算。
   * 详细讲解博客地址：https://blog.csdn.net/hlp4207/article/details/90717905
   */
 object WaterMarkFunc02 {
@@ -81,10 +85,6 @@ object WaterMarkFunc02 {
     val lateData = new OutputTag[(String,Long)]("late")
     val result: DataStream[String] = waterStream.keyBy(0)// 根据name值进行分组
       .window(TumblingEventTimeWindows.of(Time.seconds(5L)))// 5s跨度的基于事件时间的翻滚窗口
-    /**
-      * 对于此窗口而言，允许2秒的迟到数据，即第一次触发是在watermark > end-of-window时
-      * 第二次（或多次）触发的条件是watermark < end-of-window + allowedLateness时间内，这个窗口有late数据到达
-      */
       .allowedLateness(Time.seconds(2L))
       .sideOutputLateData(lateData)
       .apply(new WindowFunction[(String, Long), String, Tuple, TimeWindow] {
