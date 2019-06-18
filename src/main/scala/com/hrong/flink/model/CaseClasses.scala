@@ -1,7 +1,7 @@
 package com.hrong.flink.model
 
-case class Stu(id: Int, class_id: Int, name: String, age: Int) {
-  override def toString: String = "Student{" + "id=" + id + ", classId=" + class_id + ", name='" + name + '\'' + ", age=" + age + '}';
+case class StudentScala(id: Int, class_id: Int, name: String, age: Int) {
+  override def toString: String = "StudentJava{" + "id=" + id + ", classId=" + class_id + ", name='" + name + '\'' + ", age=" + age + '}'
 }
 
 case class IncomeWithEventTime(storedId: Int, money: Double, time: Long)

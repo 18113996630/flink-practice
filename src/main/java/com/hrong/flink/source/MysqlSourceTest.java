@@ -1,6 +1,6 @@
 package com.hrong.flink.source;
 
-import com.hrong.flink.model.Stu;
+import com.hrong.flink.model.StudentJava;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -16,7 +16,7 @@ public class MysqlSourceTest {
 	public static void main(String[] args) {
 		Logger.getLogger("").setLevel(Level.WARNING);
 		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		DataStreamSource<Stu> dataStreamSource = env.addSource(new MysqlSource());
+		DataStreamSource<StudentJava> dataStreamSource = env.addSource(new MysqlSource());
 		dataStreamSource.print();
 		try {
 			env.execute();

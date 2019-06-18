@@ -1,6 +1,6 @@
 package com.hrong.flink.sink;
 
-import com.hrong.flink.model.Stu;
+import com.hrong.flink.model.StudentJava;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -12,8 +12,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class LocalSink {
 	public static void main(String[] args) {
 		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		DataStreamSource<Stu> streamSource = env.fromElements(new Stu(1, 2, "cracy", 20),
-				new Stu(2, 2, "leecon", 22));
+		DataStreamSource<StudentJava> streamSource = env.fromElements(new StudentJava(1, 2, "cracy", 20),
+				new StudentJava(2, 2, "leecon", 22));
 		streamSource.print();
 		streamSource.printToErr();
 		try {

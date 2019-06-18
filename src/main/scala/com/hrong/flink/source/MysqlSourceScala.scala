@@ -2,12 +2,12 @@ package com.hrong.flink.source
 
 import java.sql.{Connection, PreparedStatement}
 
-import com.hrong.flink.model.Stu
+import com.hrong.flink.model.StudentScala
 import com.hrong.flink.utils.JdbcUtil
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, SourceFunction}
 
-class MysqlSourceScala extends RichSourceFunction[Stu] {
+class MysqlSourceScala extends RichSourceFunction[StudentScala] {
   private var connection: Connection = _
   private var ps: PreparedStatement = _
 
@@ -17,14 +17,14 @@ class MysqlSourceScala extends RichSourceFunction[Stu] {
     ps = connection.prepareStatement("select id, class_id, name, age from stu")
   }
 
-  override def run(ctx: SourceFunction.SourceContext[Stu]): Unit = {
+  override def run(ctx: SourceFunction.SourceContext[StudentScala]): Unit = {
     val resultSet = ps.executeQuery()
     while (resultSet.next()) {
       val id = resultSet.getInt("id")
       val classId = resultSet.getInt("class_id")
       val name = resultSet.getString("name")
       val age = resultSet.getInt("age")
-      val stu = Stu(id,classId,name,age)
+      val stu = StudentScala(id,classId,name,age)
       ctx.collect(stu)
     }
   }

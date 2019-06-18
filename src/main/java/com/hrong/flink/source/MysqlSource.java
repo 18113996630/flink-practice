@@ -1,6 +1,6 @@
 package com.hrong.flink.source;
 
-import com.hrong.flink.model.Stu;
+import com.hrong.flink.model.StudentJava;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @Author huangrong
  * @Date 2019/5/8 23:19
  **/
-public class MysqlSource extends RichSourceFunction<Stu> {
+public class MysqlSource extends RichSourceFunction<StudentJava> {
 	private Connection connection;
 	private PreparedStatement preparedStatement;
 
@@ -44,15 +44,15 @@ public class MysqlSource extends RichSourceFunction<Stu> {
 	}
 
 	@Override
-	public void run(SourceContext<Stu> sourceContext) throws Exception {
+	public void run(SourceContext<StudentJava> sourceContext) throws Exception {
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			int id = resultSet.getInt("id");
 			int classId = resultSet.getInt("class_id");
 			String name = resultSet.getString("name");
 			int age = resultSet.getInt("age");
-			Stu stu = new Stu(id, classId, name, age);
-			sourceContext.collect(stu);
+			StudentJava studentJava = new StudentJava(id, classId, name, age);
+			sourceContext.collect(studentJava);
 		}
 	}
 

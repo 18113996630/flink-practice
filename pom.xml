@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>flink-practice</name>
     <description>Demo project for flink</description>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -184,6 +185,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.7</version>
@@ -198,12 +204,32 @@
     </dependencies>
 
     <build>
+        <finalName>flink-practice</finalName>
+        <!--scala待编译的文件目录-->
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <!-- Scala Compiler -->
         <plugins>
+            <!-- Scala Compiler -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
     </build>
 
 </project>

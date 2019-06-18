@@ -5,17 +5,17 @@ package com.hrong.flink.model;
  * @Author hrong
  * @Date 2019/5/9 11:52
  **/
-public class Student {
+public class StudentJava {
 	private int id;
 	private int classId;
 	private String name;
 	private int age;
 
 
-	public Student() {
+	public StudentJava() {
 	}
 
-	public Student(int id, int classId, String name, int age) {
+	public StudentJava(int id, int classId, String name, int age) {
 		this.id = id;
 		this.classId = classId;
 		this.name = name;
@@ -56,7 +56,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student{" +
+		return "StudentJava{" +
 				"id=" + id +
 				", classId=" + classId +
 				", name='" + name + '\'' +

@@ -19,7 +19,7 @@ object CheckPointFunc01 {
     env.getCheckpointConfig.setFailOnCheckpointingErrors(false)
     // 保留的checkpoint的数目
     env.getCheckpointConfig.setMaxConcurrentCheckpoints(1)
-    //
+    // 在task取消时是否保存checkpoint文件
     env.getCheckpointConfig.enableExternalizedCheckpoints(ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
 
   }

@@ -2,12 +2,12 @@ package com.hrong.flink.sink
 
 import java.sql.{Connection, PreparedStatement}
 
-import com.hrong.flink.model.Stu
+import com.hrong.flink.model.StudentScala
 import com.hrong.flink.utils.JdbcUtil
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.sink.{RichSinkFunction, SinkFunction}
 
-class MysqlSinkScala extends RichSinkFunction[Stu] {
+class MysqlSinkScala extends RichSinkFunction[StudentScala] {
   private var connection: Connection = _
   private var ps: PreparedStatement = _
 
@@ -28,7 +28,7 @@ class MysqlSinkScala extends RichSinkFunction[Stu] {
     }
   }
 
-  override def invoke(value: Stu, context: SinkFunction.Context[_]): Unit = {
+  override def invoke(value: StudentScala, context: SinkFunction.Context[_]): Unit = {
     try {
       ps.setInt(1, value.id)
       ps.setInt(2, value.class_id)

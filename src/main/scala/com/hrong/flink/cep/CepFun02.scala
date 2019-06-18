@@ -13,9 +13,9 @@ import org.apache.flink.streaming.api.watermark.Watermark
 
 /**
   * flink-cep示例代码
-  * cep简单使用
+  * cep匹配时启用循环模式,66行为修改点，末尾有解释
   */
-object CepFun01 {
+object CepFun02 {
   def main(args: Array[String]): Unit = {
     val senv = StreamExecutionEnvironment.getExecutionEnvironment
     // 设置流数据时间类型为event-time
@@ -28,8 +28,10 @@ object CepFun01 {
       (Event(4, "forth", 4.0), 5L),
       // 延迟数据
       (Event(5, "fifth", 5.0), 2L),
+      // 新增一条数据
+      (Event(6, "sixth", 6.0), 6L),
       // 触发window
-      (Event(6, "fifth", 6.0), 9L)
+      (Event(7, "seventh", 6.0), 9L)
     ).assignTimestampsAndWatermarks(new AssignerWithPunctuatedWatermarks[(Event, Long)] {
       // 事件时间
       var currentMaxTimestamp = 0L
@@ -61,7 +63,7 @@ object CepFun01 {
       * 意思是只要符合以id为3开头，并且接下来的第一条数据的score大于等于3，第二条数据大于等于5即满足pattern
       */
     val pattern = Pattern.begin[Event]("start").where(event => event.id == 3)
-      .next("middle").where(event => event.score >= 3)
+      .next("middle").where(event => event.score >= 3).oneOrMore
       .followedBy("end").where(event => event.score >= 5)
 
     /**
@@ -77,20 +79,21 @@ object CepFun01 {
       override def select(pattern: util.Map[String, util.List[Event]]): String = {
         var res: String = ""
         if (pattern != null) {
+          val size = pattern.get("middle").size()
+          var middle = ""
+          for (num <- 0 until size) {
+            middle += pattern.get("middle").get(num) + "  "
+          }
           res = "start:【" + pattern.get("start").get(0) + "】 ->" +
-            "middle: 【" + pattern.get("middle").get(0) + "】 ->" +
+            "middle: 【" + middle + "】 ->" +
             "end: 【" + pattern.get("end").get(0) + "】"
         }
         res
       }
     }).print()
-    // 输出： start:【Event(3,third,3.0)】 ->middle: 【Event(4,forth,4.0)】 ->end: 【Event(6,fifth,6.0)】
-    // 解释：按照event-time进行cep匹配，id-5的数据为迟到的数据，所以事后3-4-6
+    // 输出结果： start:【Event(3,third,3.0)】 ->middle: 【Event(4,forth,4.0)  】 ->end: 【Event(6,sixth,6.0)】
+    //           start:【Event(3,third,3.0)】 ->middle: 【Event(4,forth,4.0)  Event(6,sixth,6.0)  】 ->end: 【Event(7,seventh,6.0)】
+    // 解释：定义pattern时，在where后有oneOrMore，表示只要有一个以上符合条件的数据都满足pattern
     senv.execute(this.getClass.getName)
   }
-}
-
-@Data
-case class Event(id: Int, name: String, score: Double) {
-
 }
