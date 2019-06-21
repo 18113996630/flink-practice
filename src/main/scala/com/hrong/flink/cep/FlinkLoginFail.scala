@@ -12,12 +12,12 @@ object FlinkLoginFail {
     val loginEventStream = env.fromCollection(List(
       LoginEvent("1", "192.168.0.1", "fail"),
       LoginEvent("1", "192.168.0.2", "fail"),
-      LoginEvent("1", "192.168.0.3", "fail"),
+      LoginEvent("1", "192.168.0.3", "success"),
       LoginEvent("1", "192.168.0.5", "fail"),
       LoginEvent("2", "192.168.10.10", "success") ))
 
     val loginFailPattern = Pattern.begin[LoginEvent]("begin")
-      .where(_.ltype.equals("fail")) .next("next")
+      .where(_.ltype.equals("fail")) .followedBy("next")
       .where(_.ltype.equals("fail"))
       .within(Time.seconds(1))
 

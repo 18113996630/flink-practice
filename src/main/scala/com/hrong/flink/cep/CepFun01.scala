@@ -91,6 +91,5 @@ object CepFun01 {
 }
 
 @Data
-case class Event(id: Int, name: String, score: Double) {
+case class Event(id: Int, name: String, score: Double)
 
-}
