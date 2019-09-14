@@ -1,6 +1,6 @@
 package com.hrong.flink.sink
 
-import com.hrong.flink.model.{StudentJava, StudentScala}
+import com.hrong.flink.model.StudentScala
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 
 object SinkTest {
