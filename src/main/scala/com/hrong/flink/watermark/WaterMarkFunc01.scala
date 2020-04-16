@@ -5,7 +5,7 @@ import org.apache.flink.api.java.tuple.Tuple
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks
 import org.apache.flink.streaming.api.scala.function.WindowFunction
-import org.apache.flink.streaming.api.scala.{DataStream, OutputTag, StreamExecutionEnvironment}
+import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment}
 import org.apache.flink.streaming.api.watermark.Watermark
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
@@ -19,7 +19,7 @@ import scala.collection.mutable.ArrayBuffer
   * 水印的目的：处理乱序的数据问题 需要结合window来处理
   * window触发的条件：
   * 1、window中必须要数据
-  * 2、waterrMark值=window的结束时间/event-time=window的结束时间+允许乱序的时间(waterrMark值)
+  * 2、waterMark值=window的结束时间/event-time=window的结束时间+允许乱序的时间(waterMark值)
   * 详细讲解博客地址：https://blog.csdn.net/hlp4207/article/details/90698296
   */
 object WaterMarkFunc01 {

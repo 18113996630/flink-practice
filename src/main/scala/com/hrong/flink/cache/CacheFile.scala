@@ -16,7 +16,7 @@ object CacheFile {
   def main(args: Array[String]): Unit = {
     val env = ExecutionEnvironment.getExecutionEnvironment
     //在分布式缓存中将本地的文件进行注册
-    env.registerCachedFile("file:///D:/workspace/workspace_hadoop/flink-practice/src/main/resources/cachefile", "fruitsPrice")
+    env.registerCachedFile("./cache-file", "fruitsPrice")
 
     val weight = env.fromElements(
       WeightInfo("香蕉", 2),

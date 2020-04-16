@@ -30,7 +30,7 @@ object BroadCastVariables {
 
       override def open(parameters: Configuration): Unit = {
         super.open(parameters)
-//        org.apache.flink.api.common.functions.AbstractRichFunction#getRuntimeContext().getBroadCastVariable(String)`
+        //        org.apache.flink.api.common.functions.AbstractRichFunction#getRuntimeContext().getBroadCastVariable(String)`
         fruitsPrice = getRuntimeContext.getBroadcastVariable("fruitsPrice")
       }
 

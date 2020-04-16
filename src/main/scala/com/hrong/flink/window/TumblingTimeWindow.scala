@@ -12,21 +12,21 @@ import org.apache.flink.streaming.api.windowing.time.Time
 /**
   * 无重叠数据，10秒钟统计一次
   * 输入：1:1
-  *      1:2
-  *      1:1
-  *      1:2
+  * 1:2
+  * 1:1
+  * 1:2
   * 输出：
-  *      receive : 1:1
-  *      receive : 1:2
-  *      2019-05-16 11:22:46 compute result::6> Income(1,3.0)
-  *      receive : 1:1
-  *      receive : 1:2
-  *      2019-05-16 11:22:46 compute result::6> Income(1,3.0)
+  * receive : 1:1
+  * receive : 1:2
+  * 2019-05-16 11:22:46 compute result::6> Income(1,3.0)
+  * receive : 1:1
+  * receive : 1:2
+  * 2019-05-16 11:22:46 compute result::6> Income(1,3.0)
   */
 object TumblingTimeWindow {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
-    val data: DataStream[String] = env.socketTextStream("s102", 9999)
+    val data: DataStream[String] = env.socketTextStream("n151", 9999)
     val incomeData = data.map(item => {
       println(s"receive : $item")
       try {
@@ -42,8 +42,8 @@ object TumblingTimeWindow {
     })
     val moneySum = incomeData.keyBy("storeId")
       .timeWindow(Time.seconds(10L))
-      .sum("money")
-    moneySum.print(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date)+" compute result:")
+      .sum("money").filter(income => income.money > 5)
+    moneySum.print(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date) + " compute result:")
     env.execute(this.getClass.getName)
   }
 }
