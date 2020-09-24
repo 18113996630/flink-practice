@@ -14,7 +14,7 @@ class MysqlSourceScala extends RichSourceFunction[StudentScala] {
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
     connection = JdbcUtil.getConnection
-    ps = connection.prepareStatement("select id, class_id, name, age from stu")
+    ps = connection.prepareStatement("select id, class_id, name, age from students")
   }
 
   override def run(ctx: SourceFunction.SourceContext[StudentScala]): Unit = {

@@ -6,13 +6,16 @@ import com.hrong.flink.model.{Cost, FruitsPrice, WeightInfo}
 import org.apache.flink.api.common.functions.RichMapFunction
 import org.apache.flink.api.scala.{ExecutionEnvironment, _}
 import org.apache.flink.configuration.Configuration
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * withBroadcastSet(DataSet, name) 将某个数据集作为广播集添加到该操作
   * org.apache.flink.api.common.functions.AbstractRichFunction#getRuntimeContext().getBroadCastVariable(name)
   * 根据name值获取广播数据
   */
-object BroadCastVariables {
+object BroadCastVariablesBatch {
+  @transient val log: Logger = LoggerFactory.getLogger("")
+
   def main(args: Array[String]): Unit = {
     val env = ExecutionEnvironment.getExecutionEnvironment
     val fruits = env.fromElements(
@@ -32,6 +35,7 @@ object BroadCastVariables {
         super.open(parameters)
         //        org.apache.flink.api.common.functions.AbstractRichFunction#getRuntimeContext().getBroadCastVariable(String)`
         fruitsPrice = getRuntimeContext.getBroadcastVariable("fruitsPrice")
+        log.error("1111111111111111111111111")
       }
 
       override def map(value: WeightInfo): Cost = {

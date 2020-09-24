@@ -5,7 +5,7 @@ import java.sql.{Connection, DriverManager}
 object JdbcUtil {
   def getConnection: Connection ={
     val driver = "com.mysql.jdbc.Driver"
-    val url = "jdbc:mysql://localhost:3306/test"
+    val url = "jdbc:mysql://localhost:3306/test?serverTimezone=UTC"
     val username = "root"
     val password = "123456"
     //1.加载驱动

@@ -1,15 +1,18 @@
 package com.hrong.flink.sideoutput
 
 import com.hrong.flink.utils.WordCountData
-import org.apache.flink.api.java.functions.KeySelector
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.ProcessFunction
-import org.apache.flink.streaming.api.scala._
-import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.util.Collector
 
+/**
+ * 将stream流进行切分
+ * 1、定义OutputTag
+ * 2、调用process等特定函数进行数据拆分
+ */
 object SideOutputFunc01 {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment

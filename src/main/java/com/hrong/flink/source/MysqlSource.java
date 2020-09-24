@@ -28,19 +28,7 @@ public class MysqlSource extends RichSourceFunction<StudentJava> {
 		Class.forName("com.mysql.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/test";
 		connection = DriverManager.getConnection(url, "root", "123456");
-		preparedStatement = connection.prepareStatement("select id, class_id, name, age from stu");
-	}
-
-	@Override
-	public void close() throws Exception {
-		super.close();
-		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		preparedStatement = connection.prepareStatement("select id, vender_id as class_id, name, age from students limit 1");
 	}
 
 	@Override
@@ -59,6 +47,18 @@ public class MysqlSource extends RichSourceFunction<StudentJava> {
 	@Override
 	public void cancel() {
 
+	}
+
+	@Override
+	public void close() throws Exception {
+		super.close();
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
 

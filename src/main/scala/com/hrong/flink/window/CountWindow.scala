@@ -4,7 +4,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import com.hrong.flink.model.Income
-import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment, _}
+import org.apache.flink.api.java.tuple.Tuple
+import org.apache.flink.streaming.api.TimeCharacteristic
+import org.apache.flink.streaming.api.scala.{DataStream, _}
+import org.apache.flink.streaming.api.windowing.time.Time
+import org.apache.flink.streaming.api.windowing.windows.TimeWindow
+import org.apache.flink.util.Collector
 
 /**
   * countWindow(3L)表示窗口中元素数量达到阈值3，则开启下一个窗口
@@ -32,7 +37,7 @@ import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironm
   * 可以看出来只要窗口中元素数量达到阈值3，则开启下一个窗口
   *
   */
-object TumblingCountWindow {
+object CountWindow {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     val data: DataStream[String] = env.socketTextStream("localhost", 9999)
@@ -50,10 +55,17 @@ object TumblingCountWindow {
       }
     })
     //翻滚计数窗口
-    val moneySum = incomeData.keyBy("storeId")
-      .countWindow(3L)
-      .sum("money")
-    moneySum.print(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date)+" compute result:")
+    incomeData
+      .keyBy("storeId")
+      .timeWindow(Time.seconds(10L))
+      .trigger(new CountTriggerWithTimeout[Income](3, TimeCharacteristic.ProcessingTime))
+      .apply[Income]((key: Tuple, window: TimeWindow, inputIter: Iterable[Income], out: Collector[Income]) => {
+        println(window.getStart, window.getEnd)
+        inputIter.foreach(item => out.collect(item))
+      }).print(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date)+" compute result:")
+
+
     env.execute(this.getClass.getName)
+    System.out.println(System.currentTimeMillis());
   }
 }
