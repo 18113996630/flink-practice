@@ -21,7 +21,7 @@
         <scala.version>2.11.8</scala.version>
         <flink.version>1.8.0</flink.version>
         <scala.binary.version>2.11</scala.binary.version>
-        <hadoop-client.version>2.6.0-cdh5.7.0</hadoop-client.version>
+        <hadoop-client.version>2.7.3.2.6.5.0-292</hadoop-client.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
